@@ -9,17 +9,19 @@ global.cacheCleanerStarted = false;
 export default class CachedRequestManager {
     static get(HttpContext) {
         if (HttpContext != undefined) {
-            console.log("url: "+HttpContext.req.url);
+            if(HttpContext.req.method=="GET"){
+                console.log("url: "+HttpContext.req.url);
 
-            let cache = CachedRequestManager.find(HttpContext.req.url);
-            if (cache != false && HttpContext.req.method=="GET") {
-                console.log(FgRed,"Utilisation de la cache de CachedRequestManager");
-                
-                HttpContext.response.JSON(cache.content, cache.ETag, true)
-                return true;
-            }else{
-                return false;
+                let cache = CachedRequestManager.find(HttpContext.req.url);
+                if (cache != false) {
+                    console.log(FgRed,"Utilisation de la cache de CachedRequestManager");
+                    
+                    HttpContext.response.JSON(cache.content, cache.ETag, true)
+                    return true;
+                }
             }
+            return false;
+           
         }
     }
 
