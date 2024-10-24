@@ -9,19 +9,19 @@ global.cachedRepositoriesCleanerStarted = false;
 
 export default class RepositoryCachesManager {
     static add(model, data) {
-        // if (!cachedRepositoriesCleanerStarted) {
-        //     cachedRepositoriesCleanerStarted = true;
-        //     RepositoryCachesManager.startCachedRepositoriesCleaner();
-        // }
-        // if (model != "") {
-        //     RepositoryCachesManager.clear(model);
-        //     repositoryCaches.push({
-        //         model,
-        //         data,
-        //         Expire_Time: utilities.nowInSeconds() + repositoryCachesExpirationTime
-        //     });
-        //     console.log(BgWhite + FgBlue, `[Data of ${model} repository has been cached]`);
-        // }
+        if (!cachedRepositoriesCleanerStarted) {
+            cachedRepositoriesCleanerStarted = true;
+            RepositoryCachesManager.startCachedRepositoriesCleaner();
+        }
+        if (model != "") {
+            RepositoryCachesManager.clear(model);
+            repositoryCaches.push({
+                model,
+                data,
+                Expire_Time: utilities.nowInSeconds() + repositoryCachesExpirationTime
+            });
+            console.log(BgWhite + FgBlue, `[Data of ${model} repository has been cached]`);
+        }
     }
     static startCachedRepositoriesCleaner() {
         // periodic cleaning of expired cached repository data
