@@ -12,8 +12,8 @@ export default class CachedRequestManager {
             console.log("url: "+HttpContext.req.url);
 
             let cache = CachedRequestManager.find(HttpContext.req.url);
-            if (cache != false) {
-                console.log("Utilisation de la cache de CachedRequestManager");
+            if (cache != false && HttpContext.req.method=="GET") {
+                console.log(FgRed,"Utilisation de la cache de CachedRequestManager");
                 
                 HttpContext.response.JSON(cache.content, cache.ETag, true)
                 return true;
@@ -30,6 +30,7 @@ export default class CachedRequestManager {
 
         }
         if(url != ""){
+            console.log(FgRed,"Ajout dans la cache de CachedRequestManager");
             this.clear(url);
             requestCaches.push({
                 url, content,
@@ -42,7 +43,7 @@ export default class CachedRequestManager {
         if (url != "") {
             for (let cache of requestCaches) {
                 if (cache.url == url) {
-                    console.log("Extraction d'une ressource de la cache de CachedRequestManager");
+                    console.log(FgRed,"Extraction d'une ressource de la cache de CachedRequestManager");
                     cache.expire_time = utilities.nowInSeconds() + repositoryCachesExpirationTime;
                     return cache;
                 }
@@ -69,14 +70,14 @@ export default class CachedRequestManager {
     static startCachedRequestCleaner() {
         cacheCleanerStarted = true;
         setInterval(this.flushExpired, repositoryCachesExpirationTime * 1000);
-        console.log('CachedRequestManager Cache Cleaner has started');
+        console.log(FgRed,'CachedRequestManager Cache Cleaner has started');
 
     }
     static flushExpired() {
         let now = utilities.nowInSeconds();
         for (let cache of requestCaches) {
             if (now > cache.expire_time) {
-                console.log("Cached file data of " + cache.url + ".json expired");
+                console.log(FgRed,"Cached file data of " + cache.url + ".json expired");
             }
         }
         requestCaches = requestCaches.filter(cache => cache.expire_time > now);

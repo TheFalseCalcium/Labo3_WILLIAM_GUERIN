@@ -55,7 +55,7 @@ export default class Response {
                     CachedRequestManager.add(this.HttpContext.req.url, jsonObj, ETag);
                 }
             }
-            console.log("ETag: "+ETag);
+            //console.log("ETag: "+ETag);
 
             return this.end(content);
         } else

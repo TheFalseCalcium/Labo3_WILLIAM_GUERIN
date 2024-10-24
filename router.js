@@ -53,7 +53,7 @@ export const API_EndPoint = function (HttpContext) {
             } else {
                 // not an API endpoint
                 // must be handled by another middleware
-                //resolve(false);``   
+                resolve(false);   
             }
         }
     });
